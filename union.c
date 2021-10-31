@@ -6,7 +6,7 @@
 /*   By: dmontema <dmontema@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/31 22:23:10 by dmontema          #+#    #+#             */
-/*   Updated: 2021/10/31 23:10:28 by dmontema         ###   ########.fr       */
+/*   Updated: 2021/10/31 23:18:36 by dmontema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,3 +48,4 @@ int main(int argc, char const *argv[])
 
 // TODO:	also implement String intersection.
 // TODO:	divide into different sections and implement a selection mode to select one of the funcs (with the help of argv)
+// TODO:	rename this .c-file
