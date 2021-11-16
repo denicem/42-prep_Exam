@@ -6,7 +6,7 @@
 /*   By: dmontema <dmontema@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 02:50:19 by dmontema          #+#    #+#             */
-/*   Updated: 2021/11/16 03:05:05 by dmontema         ###   ########.fr       */
+/*   Updated: 2021/11/17 00:13:08 by dmontema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,20 @@ int main(int argc, char const *argv[])
 {
 	if (argc == 3)
 	{
-		unsigned char chars[128];
+		unsigned char chars[256];
 		int i;
 
 		i = 0;
-		while (i < 128)
+		while (i < 256)
 			chars[i++] = 0;
 		i = 0;
-		while (argv[1][i])
-			chars[(unsigned char)argv[1][i++]] = 1;
-		i = 0;
 		while (argv[2][i])
+			chars[(unsigned char)argv[2][i++]] = 1;
+		i = 0;
+		while (argv[1][i])
 		{
-			if (chars[(unsigned char)argv[2][i]] == 1)
-				write(1, &chars[(unsigned char)argv[2][i++]], 1);
+			if (chars[(unsigned char)argv[1][i]] == 1)
+				write(1, &(argv[1][i++]), 1);
 			else
 				i++;
 		}
