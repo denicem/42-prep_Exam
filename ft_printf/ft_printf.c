@@ -6,7 +6,7 @@
 /*   By: dmontema <dmontema@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 20:52:03 by dmontema          #+#    #+#             */
-/*   Updated: 2021/11/17 22:22:45 by dmontema         ###   ########.fr       */
+/*   Updated: 2021/11/17 23:01:36 by dmontema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,7 @@ int ft_putnbr(int n)
 	if (n == INT_MIN)
 	{
 		res += write(1, "-2", 2);
-		n *= -1;
-		n /= 10;
+		n = 147483648;
 	}
 	if (n < 0)
 	{
@@ -114,8 +113,8 @@ int	ft_printf(char *format, ...)
 
 int main()
 {
-	int out = printf("%s %d %x%%%\n%", "Hello", 42, 15343);
-	int out1 = ft_printf("%s %d %x%%%\n%", "Hello", 42, 15343);
+	int out = printf("%d\n", INT_MIN);
+	int out1 = ft_printf("%d\n", INT_MIN);
 
 	printf("\n%d | %d\n", out, out1);
 
