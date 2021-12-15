@@ -6,7 +6,7 @@
 /*   By: dmontema <dmontema@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 17:57:50 by dmontema          #+#    #+#             */
-/*   Updated: 2021/12/01 23:15:24 by dmontema         ###   ########.fr       */
+/*   Updated: 2021/12/15 17:29:53 by dmontema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ char *getRes(char **storage, char **res)
 		free(*storage);
 		*storage = 0;
 	}
-	if (!(*res))
+	if (**res == 0)
 	{
 		free(*res);
 		return (NULL);
@@ -176,7 +176,7 @@ int main (void)
 {
 	int fd = open("test.txt", O_RDONLY);
 	char *line;
-	while ((line = get_next_line(fd)) != NULL)
+	while ((line = get_next_line(fd)))
 		printf("%s", line);
 	return (0);
 }
