@@ -6,7 +6,7 @@
 /*   By: dmontema <dmontema@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/17 20:52:03 by dmontema          #+#    #+#             */
-/*   Updated: 2021/12/16 16:19:16 by dmontema         ###   ########.fr       */
+/*   Updated: 2021/12/16 17:59:32 by dmontema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <unistd.h>
 #include <stdarg.h>
 #include <limits.h>
-#include <stdio.h>
+
 
 ////////////////////////////////////////
 ////////////** PRINTERS **/////////////
@@ -62,12 +62,12 @@ int ft_putnbr(int nbr)
 	return (res);
 }
 
-int ft_putnbr_base(unsigned long long nbr, int base, char *set)
+int ft_putnbr_base(unsigned int nbr, int base, char *set)
 {
 	int res;
 
 	res = 0;
-	if (nbr >= (unsigned long long) base)
+	if (nbr >= (unsigned int) base)
 		res += ft_putnbr_base(nbr / base, base, set);
 	res += ft_putchar(set[nbr % base]);
 	return (res);
@@ -95,7 +95,7 @@ int	ft_printf(char *format, ...)
 			else if (*format == 'd')
 				res += ft_putnbr(va_arg(args, int));
 			else if (*format == 'x')
-				res += ft_putnbr_base(va_arg(args, unsigned long long), 16, "0123456789abcdef");
+				res += ft_putnbr_base(va_arg(args, unsigned int), 16, "0123456789abcdef");
 			else if (*format == '%')
 				res += ft_putchar(*format);
 		}
@@ -109,16 +109,23 @@ int	ft_printf(char *format, ...)
 
 int main()
 {
+	/* <<<<<<< standard tests >>>>>>> */
 	ft_printf("Hello, %s!\n", "42Heilbronn");
 	ft_printf("nbr: %d, neg nbr: %d, hex: %x\n", 42, -42, 42);
 	ft_printf("%s\n", NULL);
-	ft_printf("---------------\n");
+
+	// ft_printf("---------------\n");
 	/* <<<<<<< INT_MIN && INT_MAX >>>>>>> */
 	// ft_printf("MY:\tINT_MIN: %d | INT_MAX: %d\n", INT_MIN, INT_MAX);
 	// printf("OG:\tINT_MIN: %d | INT_MAX: %d\n", INT_MIN, INT_MAX);
 	// ft_printf("\n");
 	// ft_printf("MY:\tINT_MIN-1: %d | INT_MAX+1: %d\n", INT_MIN - 1, INT_MAX) + 1;
 	// printf("OG:\tINT_MIN-1: %d | INT_MAX+1: %d\n", INT_MIN - 1, INT_MAX) + 1;
+
+	/* <<<<<<< neg hex >>>>>>> */
+	// ft_printf("---------------\n");
+	// ft_printf("MY:\tneg hex: %x\n", INT_MIN + 20);
+	// printf("OG:\tneg hex: %x\n", INT_MIN + 20);
 
 	return (0);
 }
