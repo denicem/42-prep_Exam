@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   gnl.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dmontema <dmontema@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/01 17:57:50 by dmontema          #+#    #+#             */
-/*   Updated: 2022/01/27 16:17:51 by dmontema         ###   ########.fr       */
+/*   Created: 2022/01/26 21:57:47 by dmontema          #+#    #+#             */
+/*   Updated: 2022/01/27 16:09:10 by dmontema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <stdio.h>
 
 #ifndef BUFFER_SIZE
-#define BUFFER_SIZE 26
+#define BUFFER_SIZE 21
 #endif
 
 int ft_strlen(char *str)
@@ -39,35 +39,32 @@ char *ft_strchr_nl(char *str)
 	return (NULL);
 }
 
-char *ft_str_calloc(int size)
+char *str_calloc(int size)
 {
 	char *res;
-	int i;
+	int i = 0;
 
-	res = malloc(size);
-	if (!res)
+	res = malloc(size * sizeof(char));
+	if (res == NULL)
 		return (NULL);
-	i = 0;
 	while (i < size)
 		res[i++] = 0;
 	return (res);
 }
 
-char *ft_strjoin_gnl(char **str1, char *str2, int size)
+char *strjoin_gnl(char **str1, char *str2, int len)
 {
 	char *res;
-	int i, j;
-
-	res = ft_str_calloc(ft_strlen(*str1) + size + 1);
-	if (!res)
+	int i = 0, j = 0;
+	
+	res = str_calloc(ft_strlen(*str1) + len + 1);
+	if (res == NULL)
 		return (NULL);
-	i = 0;
 	while ((*str1)[i])
 	{
 		res[i] = (*str1)[i];
 		i++;
 	}
-	j = 0;
 	while (str2[j])
 	{
 		res[i + j] = str2[j];
@@ -78,13 +75,13 @@ char *ft_strjoin_gnl(char **str1, char *str2, int size)
 	return (res);
 }
 
-char *ft_strdup (char *str)
+char *ft_strdup(char *str)
 {
 	char *res;
 	int i = 0;
 
-	res = ft_str_calloc(ft_strlen(str) + 1);
-	if (!res)
+	res = str_calloc(ft_strlen(str) + 1);
+	if (res == NULL)
 		return (NULL);
 	while (str[i])
 	{
@@ -95,8 +92,6 @@ char *ft_strdup (char *str)
 	return (res);
 }
 
-//////////////////////////////////////////////////
-
 char *getRes(char **storage, char **res)
 {
 	char *newl;
@@ -106,8 +101,14 @@ char *getRes(char **storage, char **res)
 	newl = ft_strchr_nl(*res);
 	if (newl && *(newl + 1))
 	{
+		char *tmp;
+
 		*storage = ft_strdup(newl + 1);
 		*(newl + 1) = 0;
+
+		tmp = *res;
+		*res = ft_strdup(*res);
+		free(tmp);
 	}
 	if (**res == 0)
 	{
@@ -117,27 +118,26 @@ char *getRes(char **storage, char **res)
 	return (*res);
 }
 
-char *readLine(int fd, char **storage, char **res)
+char *readLine(char **storage, char **res, int fd)
 {
-	int bytesRead;
-
 	if (!ft_strchr_nl(*res))
 	{
-		bytesRead = 1;
-		while (bytesRead && !ft_strchr_nl(*storage))
+		int bytes = 1;
+
+		while (bytes && !ft_strchr_nl(*storage))
 		{
-			bytesRead = read(fd, *storage, BUFFER_SIZE);
-			if (bytesRead < 0)
+			bytes = read(fd, *storage, BUFFER_SIZE);
+			if (bytes < 0)
 			{
-				free(*res);
 				free(*storage);
+				free(res);
 				return (NULL);
 			}
-			(*storage)[bytesRead] = 0;
-			*res = ft_strjoin_gnl(res, *storage, bytesRead);
+			(*storage)[bytes] = 0;
+			*res = strjoin_gnl(res, *storage, bytes);
 		}
 	}
-	return getRes(storage, res);
+	return (getRes(storage, res));
 }
 
 int prepareVars(char **storage, char **res)
@@ -149,12 +149,11 @@ int prepareVars(char **storage, char **res)
 		*storage = 0;
 	}
 	else
-		*res = ft_str_calloc(1);
-	*storage = ft_str_calloc(BUFFER_SIZE);
+		*res = str_calloc(1);
+	*storage = str_calloc(BUFFER_SIZE);
 	if (*res == NULL || *storage == NULL)
 		return (0);
 	return (1);
-
 }
 
 char *get_next_line(int fd)
@@ -166,7 +165,7 @@ char *get_next_line(int fd)
 		return (NULL);
 	if (!prepareVars(&storage, &res))
 		return (NULL);
-	res = readLine(fd, &storage, &res);
+	res = readLine(&storage, &res, fd);
 	return (res);
 }
 
@@ -179,7 +178,6 @@ int main (void)
 		printf("%s", line);
 		free(line);
 	}
-	free(line);
 	system("leaks a.out");
 	return (0);
 }
