@@ -6,7 +6,7 @@
 /*   By: dmontema <dmontema@42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 17:57:50 by dmontema          #+#    #+#             */
-/*   Updated: 2022/01/27 16:17:51 by dmontema         ###   ########.fr       */
+/*   Updated: 2022/02/02 20:04:38 by dmontema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,11 @@ int ft_strlen(char *str)
 {
 	int res = 0;
 
-	while (*str++)
+	while (*str)
+	{
 		res++;
+		str++;
+	}
 	return (res);
 }
 
@@ -150,9 +153,14 @@ int prepareVars(char **storage, char **res)
 	}
 	else
 		*res = ft_str_calloc(1);
-	*storage = ft_str_calloc(BUFFER_SIZE);
-	if (*res == NULL || *storage == NULL)
+	if (!(*res))
 		return (0);
+	*storage = ft_str_calloc(BUFFER_SIZE);
+	if (!(*storage))
+	{
+		free(*res);
+		return (0);
+	}
 	return (1);
 
 }
