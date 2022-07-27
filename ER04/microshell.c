@@ -15,10 +15,10 @@
 #include <string.h>
 
 #ifdef TEST_SH
-#define TEST 1
-#else
-#define TEST 0
-#endif
+// #define TEST 1
+// #else
+// #define TEST 0
+// #endif
 
 int	print_error(char *str, char *arg)
 {
@@ -59,7 +59,7 @@ int main(int argc, char *argv[], char *env[])
 		while (argv[i] && strcmp(argv[i], ";") && strcmp(argv[i], "|"))
 			i++;
 		// CD
-		if (!strcmp(argv[i], "cd"))
+		if (!strcmp(argv[0], "cd"))
 		{
 			if (i != 2)
 				print_error("error: cd: bad arguments", NULL);
@@ -104,8 +104,8 @@ int main(int argc, char *argv[], char *env[])
 		}
 	}
 	close(tmp_fd);
-	if (TEST)
-	while (1);
+	// if (TEST)
+	// while (1);
 	return (0);
 }
 
